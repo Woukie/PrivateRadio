@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_scroll_text/auto_scroll_text.dart';
 import 'package:flutter/material.dart';
 import 'package:private_radio/src/dashboard/dashboard_provider.dart';
@@ -38,8 +40,13 @@ class _StationListItemState extends State<StationListItem> {
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Image(
-                image: NetworkImage(widget.stationData.image),
                 height: 80,
+                width: 80,
+                errorBuilder: (context, error, stackTrace) =>
+                    const Icon(size: 52, Icons.error),
+                image: widget.stationData.image.startsWith("http")
+                    ? NetworkImage(widget.stationData.image)
+                    : FileImage(File(widget.stationData.image)),
               ),
             ),
             const Padding(padding: EdgeInsets.only(right: 6)),

@@ -25,6 +25,8 @@ class PromptStationDialogue extends StatefulWidget {
 }
 
 class _PromptStationDialogueState extends State<PromptStationDialogue> {
+  String? imageUrl;
+
   @override
   Widget build(BuildContext context) {
     final ImagePicker picker = ImagePicker();
@@ -36,7 +38,7 @@ class _PromptStationDialogueState extends State<PromptStationDialogue> {
       text: widget.defaultStationData?.url ?? "",
     );
 
-    String imageUrl = widget.defaultStationData?.image ??
+    imageUrl ??= widget.defaultStationData?.image ??
         "http://owdo.thisisglobal.com/2.0/id/154/logo/800x800.jpg";
 
     var mediaQuery = MediaQuery.of(context);
@@ -104,9 +106,9 @@ class _PromptStationDialogueState extends State<PromptStationDialogue> {
                         width: 52,
                         errorBuilder: (context, error, stackTrace) =>
                             const Icon(size: 52, Icons.error),
-                        image: imageUrl.startsWith("http")
-                            ? NetworkImage(imageUrl)
-                            : FileImage(File(imageUrl)),
+                        image: imageUrl!.startsWith("http")
+                            ? NetworkImage(imageUrl!)
+                            : FileImage(File(imageUrl!)),
                       ),
                       IconButton(
                         onPressed: () {
@@ -142,7 +144,7 @@ class _PromptStationDialogueState extends State<PromptStationDialogue> {
                       widget.submitCallback(StationData(
                         id: widget.defaultStationData?.id ?? const Uuid().v4(),
                         name: nameController.text,
-                        image: imageUrl,
+                        image: imageUrl!,
                         url: urlController.text,
                       ));
                       Navigator.pop(context);
