@@ -47,7 +47,10 @@ class DashboardProvider with ChangeNotifier {
           jsonDecode(await stationsFile.readAsString());
       _stations = Stations.fromJson(stationsJson);
     } else {
-      _stations = Stations(stationData: List.empty(growable: true));
+      _stations = Stations(
+        stationData: List.empty(growable: true),
+        favourites: List.empty(growable: true),
+      );
     }
 
     if (kDebugMode) {
@@ -132,9 +135,11 @@ class DashboardProvider with ChangeNotifier {
   }
 
   void toggleFavourate(StationData stationData) {
-    int stationIndex = _stations.stationData.indexOf(stationData);
+    if (!_stations.stationData.contains(stationData)) return;
 
-    _stations.stationData[stationIndex].toggleFavourate();
+    if (!_stations.favourites.remove(stationData.id)) {
+      _stations.favourites.insert(0, stationData.id);
+    }
 
     notifyListeners();
     save();
@@ -184,5 +189,12 @@ class DashboardProvider with ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  List<StationData> getFavouriteStations() {
+    return [
+      for (var id in stations.favourites)
+        stations.stationData.firstWhere((station) => station.id == id)
+    ];
   }
 }

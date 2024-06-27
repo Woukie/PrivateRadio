@@ -86,7 +86,10 @@ class _StationListItemState extends State<StationListItem> {
                 dashboardController.toggleFavourate(widget.stationData);
               },
               icon: Icon(
-                widget.stationData.favourate ? Icons.star : Icons.star_outline,
+                dashboardController.stations.favourites
+                        .contains(widget.stationData.id)
+                    ? Icons.star
+                    : Icons.star_outline,
               ),
             ),
           ],

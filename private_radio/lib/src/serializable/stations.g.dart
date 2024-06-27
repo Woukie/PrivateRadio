@@ -11,8 +11,13 @@ Stations _$StationsFromJson(Map<String, dynamic> json) => Stations(
               ?.map((e) => StationData.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
+      favourites: (json['favourites'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
     );
 
 Map<String, dynamic> _$StationsToJson(Stations instance) => <String, dynamic>{
       'stationData': instance.stationData,
+      'favourites': instance.favourites,
     };

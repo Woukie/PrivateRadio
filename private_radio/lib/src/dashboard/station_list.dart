@@ -20,13 +20,15 @@ class StationList extends StatelessWidget {
     DashboardProvider dashboardController =
         Provider.of<DashboardProvider>(context);
 
-    // Avoid overwriting stations by cloning
-    final List<StationData> stationData =
-        List.from(dashboardController.stations.stationData);
+    List<StationData> stationData;
 
     if (tabIndex == 1) {
-      stationData.removeWhere((station) => !station.favourate);
-    } else if (tabIndex == 2) {
+      stationData = dashboardController.getFavouriteStations();
+    } else {
+      stationData = List.from(dashboardController.stations.stationData);
+    }
+
+    if (tabIndex == 2) {
       stationData.removeWhere((station) => station.lastPlayed == null);
       stationData.sort(
         (stationA, stationB) =>

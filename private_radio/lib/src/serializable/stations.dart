@@ -8,9 +8,12 @@ part 'stations.g.dart';
 class Stations {
   @JsonKey(defaultValue: [])
   List<StationData> stationData;
+  @JsonKey(defaultValue: [])
+  List<String> favourites;
 
   Stations({
     required this.stationData,
+    required this.favourites,
   });
 
   factory Stations.fromJson(Map<String, dynamic> json) =>

@@ -10,7 +10,6 @@ StationData _$StationDataFromJson(Map<String, dynamic> json) => StationData(
       name: json['name'] as String? ?? "",
       image: json['image'] as String? ?? "",
       url: json['url'] as String? ?? "",
-      favourate: json['favourate'] as bool? ?? false,
       id: json['id'] as String,
     )..lastPlayed = json['lastPlayed'] == null
         ? null
@@ -21,7 +20,6 @@ Map<String, dynamic> _$StationDataToJson(StationData instance) =>
       'name': instance.name,
       'image': instance.image,
       'url': instance.url,
-      'favourate': instance.favourate,
       'id': instance.id,
       'lastPlayed': instance.lastPlayed?.toIso8601String(),
     };
