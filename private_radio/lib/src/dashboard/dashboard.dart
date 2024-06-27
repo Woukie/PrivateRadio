@@ -47,7 +47,7 @@ class _DashboardState extends State<Dashboard>
     DashboardProvider dashboardProvider =
         Provider.of<DashboardProvider>(context);
 
-    var _startDelay = const Duration(milliseconds: 500);
+    Duration startDelay = const Duration(milliseconds: 500);
 
     return Container(
       color: Theme.of(context).colorScheme.surfaceContainerLow,
@@ -80,7 +80,7 @@ class _DashboardState extends State<Dashboard>
                         ),
                         const Center(child: Text("Balls lol")),
                       ],
-                    ).animate().fade(delay: _startDelay),
+                    ).animate().fade(delay: startDelay),
                     Padding(
                       padding: const EdgeInsets.all(12),
                       child: AnimatedSwitcher(
@@ -120,8 +120,8 @@ class _DashboardState extends State<Dashboard>
                 tabController: _tabController,
               )
                   .animate()
-                  .slideY(begin: 1, delay: _startDelay)
-                  .fadeIn(delay: _startDelay),
+                  .slideY(begin: 1, delay: startDelay)
+                  .fadeIn(delay: startDelay),
             ],
           ),
           TopBar(
@@ -130,8 +130,8 @@ class _DashboardState extends State<Dashboard>
             boxDecoration: _containerDecoration(context),
           )
               .animate()
-              .slideY(begin: -1, delay: _startDelay)
-              .fadeIn(delay: _startDelay),
+              .slideY(begin: -1, delay: startDelay)
+              .fadeIn(delay: startDelay),
         ],
       ),
     );
