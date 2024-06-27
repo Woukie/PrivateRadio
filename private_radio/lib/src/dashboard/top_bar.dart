@@ -21,16 +21,7 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerHigh,
-        boxShadow: const [
-          BoxShadow(
-            color: Color.fromARGB(50, 0, 0, 0),
-            spreadRadius: 5,
-            blurRadius: 25,
-          ),
-        ],
-      ),
+      color: Theme.of(context).colorScheme.surfaceContainerHigh,
       child: AnimatedBuilder(
         animation: widget.tabController.animation!,
         builder: (BuildContext context, snapshot) {

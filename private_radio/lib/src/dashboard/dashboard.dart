@@ -80,6 +80,35 @@ class _DashboardState extends State<Dashboard>
                 AddStationButton(tabController: _tabController)
                     .animate()
                     .fadeIn(delay: const Duration(milliseconds: 1000)),
+                IgnorePointer(
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            height: 50,
+                            clipBehavior: Clip.antiAlias,
+                            decoration: const BoxDecoration(),
+                            child: Container(
+                              margin: const EdgeInsets.only(bottom: 50),
+                              decoration: const BoxDecoration(
+                                color: Colors.transparent,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Color.fromARGB(85, 0, 0, 0),
+                                    spreadRadius: 5,
+                                    blurRadius: 25,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
               ],
             ),
           ),
