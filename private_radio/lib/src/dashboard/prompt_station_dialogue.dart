@@ -1,9 +1,11 @@
-import 'dart:io';
-
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:private_radio/src/serializable/station_data.dart';
 import 'package:uuid/uuid.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import 'station_image.dart';
 
 class PromptStationDialogue extends StatefulWidget {
   const PromptStationDialogue({
@@ -25,21 +27,27 @@ class PromptStationDialogue extends StatefulWidget {
 }
 
 class _PromptStationDialogueState extends State<PromptStationDialogue> {
-  String? imageUrl;
+  late TextEditingController nameController, urlController, imageController;
+
+  @override
+  void initState() {
+    super.initState();
+    nameController = TextEditingController(
+      text: widget.defaultStationData?.name,
+    );
+    urlController = TextEditingController(
+      text: widget.defaultStationData?.url,
+    );
+    imageController = TextEditingController(
+      text: widget.defaultStationData?.image,
+    );
+
+    imageController.addListener(() => setState(() {}));
+  }
 
   @override
   Widget build(BuildContext context) {
     final ImagePicker picker = ImagePicker();
-    final TextEditingController nameController = TextEditingController(
-      text: widget.defaultStationData?.name ?? "",
-    );
-
-    final TextEditingController urlController = TextEditingController(
-      text: widget.defaultStationData?.url ?? "",
-    );
-
-    imageUrl ??= widget.defaultStationData?.image ??
-        "http://owdo.thisisglobal.com/2.0/id/154/logo/800x800.jpg";
 
     var mediaQuery = MediaQuery.of(context);
     var textTheme = Theme.of(context).textTheme;
@@ -49,7 +57,7 @@ class _PromptStationDialogueState extends State<PromptStationDialogue> {
 
       if (image != null) {
         setState(() {
-          imageUrl = image.path;
+          imageController.text = image.path;
         });
       }
     }
@@ -85,54 +93,62 @@ class _PromptStationDialogueState extends State<PromptStationDialogue> {
                   ],
                 ),
                 const Divider(),
-                Text('Name', style: textTheme.titleMedium),
                 InputBox(
-                  nameController: nameController,
+                  controller: nameController,
                   hintText: "Name",
                   margin: const EdgeInsets.only(bottom: 6),
                 ),
-                Text(
-                  'Choose the display name of the station',
-                  style: textTheme.labelMedium,
+                Row(
+                  children: [
+                    StationImage(path: imageController.text, size: 52),
+                    Expanded(
+                      child: InputBox(
+                        controller: imageController,
+                        hintText: "https://location.of/image...",
+                        margin: const EdgeInsets.symmetric(horizontal: 6),
+                      ),
+                    ),
+                    IconButton.filledTonal(
+                      onPressed: () {
+                        pickImage();
+                      },
+                      icon: const Icon(Icons.drive_folder_upload),
+                    ),
+                  ],
                 ),
                 const Padding(padding: EdgeInsets.all(3)),
-                Text('Image', style: textTheme.titleMedium),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 6),
-                  child: Row(
-                    children: [
-                      Image(
-                        height: 52,
-                        width: 52,
-                        errorBuilder: (context, error, stackTrace) =>
-                            const Icon(size: 52, Icons.error),
-                        image: imageUrl!.startsWith("http")
-                            ? NetworkImage(imageUrl!)
-                            : FileImage(File(imageUrl!)),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          pickImage();
-                        },
-                        icon: const Icon(Icons.edit),
-                      ),
-                    ],
-                  ),
-                ),
                 Text(
-                  'Select an image from your phone to use as the image of the station',
-                  style: textTheme.labelMedium,
+                  'Select an image for the station either from your phone or through a URL to an image on the web',
+                  style: textTheme.bodyMedium,
                 ),
-                const Padding(padding: EdgeInsets.all(3)),
-                Text('URL', style: textTheme.titleMedium),
+                const Padding(padding: EdgeInsets.all(6)),
                 InputBox(
-                  nameController: urlController,
-                  hintText: "http://example.com/...",
+                  controller: urlController,
+                  hintText: "http://url-to.audio/stream...",
                   margin: const EdgeInsets.only(bottom: 6),
                 ),
-                Text(
-                  'URLs can point to any media, though it is expected that you use an external URL stream',
-                  style: textTheme.labelMedium,
+                RichText(
+                  text: TextSpan(
+                    style: textTheme.bodyMedium,
+                    children: [
+                      const TextSpan(
+                        text: 'URLs can point to most media formats. Go to ',
+                      ),
+                      TextSpan(
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        text: 'streamurl.link',
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            launchUrl(Uri.parse('https://streamurl.link/'));
+                          },
+                      ),
+                      const TextSpan(
+                        text: ' for a list of URLs',
+                      )
+                    ],
+                  ),
                 ),
                 const Divider(),
                 Align(
@@ -144,7 +160,7 @@ class _PromptStationDialogueState extends State<PromptStationDialogue> {
                       widget.submitCallback(StationData(
                         id: widget.defaultStationData?.id ?? const Uuid().v4(),
                         name: nameController.text,
-                        image: imageUrl!,
+                        image: imageController.text,
                         url: urlController.text,
                       ));
                       Navigator.pop(context);
@@ -163,12 +179,12 @@ class _PromptStationDialogueState extends State<PromptStationDialogue> {
 class InputBox extends StatelessWidget {
   const InputBox({
     super.key,
-    required this.nameController,
+    required this.controller,
     required this.hintText,
     this.margin = const EdgeInsets.all(6),
   });
 
-  final TextEditingController nameController;
+  final TextEditingController controller;
   final String hintText;
   final EdgeInsets margin;
 
@@ -180,7 +196,7 @@ class InputBox extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12),
         child: TextField(
-          controller: nameController,
+          controller: controller,
           decoration: InputDecoration(
             hintText: hintText,
             contentPadding: EdgeInsets.zero,

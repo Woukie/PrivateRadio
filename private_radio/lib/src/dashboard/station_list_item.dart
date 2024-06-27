@@ -1,9 +1,8 @@
-import 'dart:io';
-
 import 'package:auto_scroll_text/auto_scroll_text.dart';
 import 'package:flutter/material.dart';
 import 'package:private_radio/src/dashboard/dashboard_provider.dart';
 import 'package:private_radio/src/dashboard/prompt_station_dialogue.dart';
+import 'package:private_radio/src/dashboard/station_image.dart';
 import 'package:private_radio/src/serializable/station_data.dart';
 import 'package:provider/provider.dart';
 
@@ -39,14 +38,9 @@ class _StationListItemState extends State<StationListItem> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Image(
-                height: 80,
-                width: 80,
-                errorBuilder: (context, error, stackTrace) =>
-                    const Icon(size: 52, Icons.error),
-                image: widget.stationData.image.startsWith("http")
-                    ? NetworkImage(widget.stationData.image)
-                    : FileImage(File(widget.stationData.image)),
+              child: StationImage(
+                path: widget.stationData.image,
+                size: 80,
               ),
             ),
             const Padding(padding: EdgeInsets.only(right: 6)),
