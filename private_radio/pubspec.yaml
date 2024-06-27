@@ -28,6 +28,7 @@ dependencies:
   url_launcher: ^6.3.0
   animations: ^2.0.11
   flutter_animate: ^4.5.0
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1
@@ -48,5 +49,4 @@ flutter:
   generate: true
 
   assets:
-    # Add assets from the images directory to the application.
     - assets/images/

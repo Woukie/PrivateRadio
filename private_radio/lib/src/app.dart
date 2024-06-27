@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:private_radio/src/dashboard/dashboard.dart';
 import 'package:private_radio/src/dashboard/dashboard_provider.dart';
 import 'package:provider/provider.dart';
@@ -35,8 +36,16 @@ class App extends StatelessWidget {
         supportedLocales: const [
           Locale('en', ''), // English, no country code
         ],
-        theme: ThemeData(),
-        darkTheme: ThemeData.dark(),
+        theme: ThemeData(
+          textTheme: GoogleFonts.openSansTextTheme(
+            Theme.of(context).textTheme,
+          ),
+        ),
+        darkTheme: ThemeData.dark().copyWith(
+          textTheme: Typography().white.apply(
+                fontFamily: GoogleFonts.openSans().fontFamily,
+              ),
+        ),
         themeMode: ThemeMode.system,
         home: const Scaffold(
           body: AnimatedRoot(),
