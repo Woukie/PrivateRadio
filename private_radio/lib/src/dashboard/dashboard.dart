@@ -66,7 +66,7 @@ class _DashboardState extends State<Dashboard>
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                    color: Theme.of(context).colorScheme.surfaceContainerLow,
                     boxShadow: const [
                       BoxShadow(
                         color: Color.fromARGB(50, 0, 0, 0),
