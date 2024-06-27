@@ -23,12 +23,12 @@ class AddStationButton extends StatelessWidget {
         animation: tabController.animation!,
         builder: (context, child) {
           double proportion =
-              1 - clampDouble(tabController.animation!.value - 2, 0, 1);
+              clampDouble(tabController.animation!.value - 2, 0, 1);
 
           return Transform.translate(
-            offset: Offset(0, proportion * -20),
+            offset: Offset(0, proportion * 30),
             child: Opacity(
-              opacity: proportion,
+              opacity: 1 - proportion,
               child: FloatingActionButton(
                 onPressed: () {
                   showDialog(
