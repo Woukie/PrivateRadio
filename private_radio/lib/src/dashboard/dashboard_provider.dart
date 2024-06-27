@@ -117,15 +117,15 @@ class DashboardProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> moveStation(int oldIndex, int newIndex) async {
+  void moveStation(int oldIndex, int newIndex) {
     if (oldIndex < newIndex) {
       newIndex -= 1;
     }
     final StationData stationData = _stations.stationData.removeAt(oldIndex);
     _stations.stationData.insert(newIndex, stationData);
 
-    await save();
     notifyListeners();
+    save();
   }
 
   Future<void> toggleFavourate(StationData stationData) async {
