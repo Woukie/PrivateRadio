@@ -52,7 +52,7 @@ class StationList extends StatelessWidget {
                   : "No stations here!",
             ),
           )
-        : tabIndex == 0
+        : tabIndex <= 1 && searchTerm == ""
             ? ReorderableListView(
                 proxyDecorator: (child, idk, animation) => ProxyDecorator(
                   animation: animation,
@@ -61,7 +61,10 @@ class StationList extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(6, 6, 6, 0),
                 children: _listItems(stationData),
                 onReorder: (int oldIndex, int newIndex) {
-                  dashboardController.moveStation(oldIndex, newIndex);
+                  tabIndex == 0
+                      ? dashboardController.moveStation(oldIndex, newIndex)
+                      : dashboardController.moveFavouriteStation(
+                          oldIndex, newIndex);
                 },
               )
             : ListView(
