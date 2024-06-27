@@ -128,13 +128,13 @@ class DashboardProvider with ChangeNotifier {
     save();
   }
 
-  Future<void> toggleFavourate(StationData stationData) async {
+  void toggleFavourate(StationData stationData) {
     int stationIndex = _stations.stationData.indexOf(stationData);
 
     _stations.stationData[stationIndex].toggleFavourate();
 
-    await save();
     notifyListeners();
+    save();
   }
 
   Future<void> selectStation(String? stationId) async {
