@@ -51,79 +51,8 @@ class _DashboardState extends State<Dashboard>
 
     return Container(
       color: Theme.of(context).colorScheme.surfaceContainerLow,
-      child: Stack(
+      child: Column(
         children: [
-          Column(
-            children: [
-              const SizedBox(height: 84),
-              Expanded(
-                child: Stack(
-                  alignment: Alignment.bottomCenter,
-                  children: [
-                    TabBarView(
-                      controller: _tabController,
-                      children: [
-                        StationList(
-                          tabIndex: 0,
-                          key: const Key('0'),
-                          searchTerm: _searchController.text,
-                        ),
-                        StationList(
-                          tabIndex: 1,
-                          key: const Key('1'),
-                          searchTerm: _searchController.text,
-                        ),
-                        StationList(
-                          tabIndex: 2,
-                          key: const Key('2'),
-                          searchTerm: _searchController.text,
-                        ),
-                        const Center(child: Text("Balls lol")),
-                      ],
-                    ).animate().fade(delay: startDelay),
-                    Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 150),
-                        transitionBuilder: (child, animation) {
-                          return FadeTransition(
-                              opacity: animation, child: child);
-                        },
-                        child: _tabController.index == 3
-                            ? const SizedBox(height: 20, width: 20)
-                            : FloatingActionButton(
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return PromptStationDialogue(
-                                        title: "Create Station",
-                                        submitCallback: (stationData) {
-                                          dashboardProvider
-                                              .createStation(stationData);
-                                        },
-                                      );
-                                    },
-                                  );
-                                },
-                                child: const Icon(Icons.add),
-                              ),
-                      ),
-                    )
-                        .animate()
-                        .fadeIn(delay: const Duration(milliseconds: 1000)),
-                  ],
-                ),
-              ),
-              BottomBar(
-                containerDecoration: _containerDecoration(context),
-                tabController: _tabController,
-              )
-                  .animate()
-                  .slideY(begin: 1, delay: startDelay)
-                  .fadeIn(delay: startDelay),
-            ],
-          ),
           TopBar(
             hidden: _tabController.index == 3,
             searchController: _searchController,
@@ -131,6 +60,69 @@ class _DashboardState extends State<Dashboard>
           )
               .animate()
               .slideY(begin: -1, delay: startDelay)
+              .fadeIn(delay: startDelay),
+          Expanded(
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                TabBarView(
+                  controller: _tabController,
+                  children: [
+                    StationList(
+                      tabIndex: 0,
+                      key: const Key('0'),
+                      searchTerm: _searchController.text,
+                    ),
+                    StationList(
+                      tabIndex: 1,
+                      key: const Key('1'),
+                      searchTerm: _searchController.text,
+                    ),
+                    StationList(
+                      tabIndex: 2,
+                      key: const Key('2'),
+                      searchTerm: _searchController.text,
+                    ),
+                    const Center(child: Text("Balls lol")),
+                  ],
+                ).animate().fade(delay: startDelay),
+                Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 150),
+                    transitionBuilder: (child, animation) {
+                      return FadeTransition(opacity: animation, child: child);
+                    },
+                    child: _tabController.index == 3
+                        ? const SizedBox(height: 20, width: 20)
+                        : FloatingActionButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return PromptStationDialogue(
+                                    title: "Create Station",
+                                    submitCallback: (stationData) {
+                                      dashboardProvider
+                                          .createStation(stationData);
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                            child: const Icon(Icons.add),
+                          ),
+                  ),
+                ).animate().fadeIn(delay: const Duration(milliseconds: 1000)),
+              ],
+            ),
+          ),
+          BottomBar(
+            containerDecoration: _containerDecoration(context),
+            tabController: _tabController,
+          )
+              .animate()
+              .slideY(begin: 1, delay: startDelay)
               .fadeIn(delay: startDelay),
         ],
       ),

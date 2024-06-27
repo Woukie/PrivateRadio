@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class TopBar extends StatefulWidget {
+class TopBar extends StatelessWidget {
   const TopBar({
     super.key,
     required this.searchController,
@@ -13,58 +13,44 @@ class TopBar extends StatefulWidget {
   final bool hidden;
 
   @override
-  State<TopBar> createState() => _TopBarState();
-}
-
-class _TopBarState extends State<TopBar> with TickerProviderStateMixin {
-  late final AnimationController animationController = AnimationController(
-    duration: const Duration(milliseconds: 100),
-    vsync: this,
-  );
-
-  late final Animation<double> animation = CurvedAnimation(
-    parent: animationController,
-    curve: Curves.fastOutSlowIn,
-  );
-
-  @override
   Widget build(BuildContext context) {
-    if (widget.hidden) {
-      animationController.reverse();
-    } else {
-      animationController.forward();
-    }
-
-    return Container(
-      decoration: widget.boxDecoration,
-      child: SafeArea(
-        bottom: false,
-        child: Row(
-          children: [
-            const SizedBox(height: 60),
-            Expanded(
-              child: SizeTransition(
-                sizeFactor: animation,
-                axis: Axis.vertical,
-                axisAlignment: 1,
-                child: Card(
-                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                  margin: const EdgeInsets.all(6),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: TextField(
-                      controller: widget.searchController,
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.zero,
-                        border: InputBorder.none,
-                        icon: Icon(Icons.search),
+    return AnimatedSize(
+      duration: const Duration(milliseconds: 250),
+      child: Container(
+        decoration: boxDecoration,
+        child: SafeArea(
+          bottom: false,
+          child: AnimatedSwitcher(
+            switchInCurve: Curves.easeInOut,
+            switchOutCurve: Curves.easeInOut,
+            duration: const Duration(milliseconds: 250),
+            transitionBuilder: (child, animation) {
+              return FadeTransition(
+                  opacity: animation,
+                  child: SizeTransition(
+                    sizeFactor: animation,
+                    child: child,
+                  ));
+            },
+            child: hidden
+                ? Container()
+                : Card(
+                    color:
+                        Theme.of(context).colorScheme.surfaceContainerHighest,
+                    margin: const EdgeInsets.all(6),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: TextField(
+                        controller: searchController,
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.zero,
+                          border: InputBorder.none,
+                          icon: Icon(Icons.search),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
