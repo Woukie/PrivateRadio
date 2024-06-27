@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:private_radio/src/dashboard/dashboard_provider.dart';
 import 'package:private_radio/src/dashboard/prompt_station_dialogue.dart';
 import 'package:provider/provider.dart';
@@ -46,6 +47,8 @@ class _DashboardState extends State<Dashboard>
     DashboardProvider dashboardProvider =
         Provider.of<DashboardProvider>(context);
 
+    var _startDelay = const Duration(milliseconds: 500);
+
     return Container(
       color: Theme.of(context).colorScheme.surfaceContainerLow,
       child: Stack(
@@ -77,7 +80,7 @@ class _DashboardState extends State<Dashboard>
                         ),
                         const Center(child: Text("Balls lol")),
                       ],
-                    ),
+                    ).animate().fade(delay: _startDelay),
                     Padding(
                       padding: const EdgeInsets.all(12),
                       child: AnimatedSwitcher(
@@ -106,21 +109,29 @@ class _DashboardState extends State<Dashboard>
                                 child: const Icon(Icons.add),
                               ),
                       ),
-                    ),
+                    )
+                        .animate()
+                        .fadeIn(delay: const Duration(milliseconds: 1000)),
                   ],
                 ),
               ),
               BottomBar(
                 containerDecoration: _containerDecoration(context),
                 tabController: _tabController,
-              ),
+              )
+                  .animate()
+                  .slideY(begin: 1, delay: _startDelay)
+                  .fadeIn(delay: _startDelay),
             ],
           ),
           TopBar(
             hidden: _tabController.index == 3,
             searchController: _searchController,
             boxDecoration: _containerDecoration(context),
-          ),
+          )
+              .animate()
+              .slideY(begin: -1, delay: _startDelay)
+              .fadeIn(delay: _startDelay),
         ],
       ),
     );
