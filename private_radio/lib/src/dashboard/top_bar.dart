@@ -51,22 +51,27 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
             proportion = widget.tabController.animation!.value % 1;
           }
 
+          double lastPageProportion = clampDouble(
+            widget.tabController.animation!.value - 2,
+            0,
+            1,
+          );
           return Column(
             children: [
               SafeArea(bottom: false, child: Container()),
               ClipRect(
                 child: Align(
                   alignment: Alignment.topCenter,
-                  heightFactor: 1 -
-                      clampDouble(
-                        widget.tabController.animation!.value - 2,
-                        0,
-                        1,
-                      ),
+                  heightFactor: 1 - lastPageProportion,
                   child: Card(
                     color:
                         Theme.of(context).colorScheme.surfaceContainerHighest,
-                    margin: const EdgeInsets.fromLTRB(6, 6, 6, 0),
+                    margin: EdgeInsets.fromLTRB(
+                      6,
+                      6,
+                      6,
+                      (1 - lastPageProportion) * 6,
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: TextField(
@@ -89,7 +94,8 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                   child: Opacity(
                     opacity: 1 - sin(pi * proportion).abs(),
                     child: Padding(
-                      padding: const EdgeInsets.all(6),
+                      padding:
+                          EdgeInsets.fromLTRB(6, lastPageProportion * 6, 6, 6),
                       child: Text(
                         ["Home", "Favourites", "Recents", "Settings"][fast
                             ? proportion.abs() > 0.5
