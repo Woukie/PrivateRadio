@@ -100,19 +100,21 @@ class _PromptStationDialogueState extends State<PromptStationDialogue> {
                 ),
                 Row(
                   children: [
-                    StationImage(path: imageController.text, size: 52),
+                    StationImage(
+                      path: imageController.text,
+                      size: 50,
+                      borderRadius: 12,
+                    ),
                     Expanded(
                       child: InputBox(
                         controller: imageController,
                         hintText: "https://location.of/image...",
-                        margin: const EdgeInsets.symmetric(horizontal: 6),
+                        margin: const EdgeInsets.only(left: 6),
+                        trailing: IconButton(
+                          onPressed: () => pickImage(),
+                          icon: const Icon(Icons.drive_folder_upload),
+                        ),
                       ),
-                    ),
-                    IconButton.filledTonal(
-                      onPressed: () {
-                        pickImage();
-                      },
-                      icon: const Icon(Icons.drive_folder_upload),
                     ),
                   ],
                 ),
@@ -182,27 +184,36 @@ class InputBox extends StatelessWidget {
     required this.controller,
     required this.hintText,
     this.margin = const EdgeInsets.all(6),
+    this.trailing,
   });
 
   final TextEditingController controller;
   final String hintText;
   final EdgeInsets margin;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       color: Theme.of(context).colorScheme.surfaceContainerHighest,
       margin: margin,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: TextField(
-          controller: controller,
-          decoration: InputDecoration(
-            hintText: hintText,
-            contentPadding: EdgeInsets.zero,
-            border: InputBorder.none,
+      child: Row(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: TextField(
+                controller: controller,
+                decoration: InputDecoration(
+                  hintText: hintText,
+                  contentPadding: EdgeInsets.zero,
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
           ),
-        ),
+          trailing ?? Container(),
+        ],
       ),
     );
   }

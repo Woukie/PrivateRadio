@@ -6,42 +6,47 @@ class StationImage extends StatelessWidget {
     super.key,
     required this.path,
     this.size = 80,
+    this.borderRadius = 0,
   });
 
   final String path;
-  final double size;
+  final double size, borderRadius;
 
   @override
   Widget build(BuildContext context) {
-    return Image(
-      height: size,
-      width: size,
-      errorBuilder: (context, error, stackTrace) => Card(
-        margin: EdgeInsets.zero,
-        color: Theme.of(context).colorScheme.surfaceContainerHighest,
-        child: Icon(
-          size: size,
-          Icons.radio,
-          color: Theme.of(context).colorScheme.onSurface,
-        ),
-      ),
-      loadingBuilder: (context, child, loadingProgress) => SizedBox(
-        width: size,
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(borderRadius),
+      child: Image(
         height: size,
-        child: Stack(
-          alignment: Alignment.center,
-          fit: StackFit.expand,
-          children: [
-            const Padding(
-              padding: EdgeInsets.all(12.0),
-              child: CircularProgressIndicator(),
-            ),
-            child,
-          ],
+        width: size,
+        errorBuilder: (context, error, stackTrace) => Card(
+          margin: EdgeInsets.zero,
+          color: Theme.of(context).colorScheme.surfaceContainerHighest,
+          child: Icon(
+            size: size,
+            Icons.radio,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
         ),
+        loadingBuilder: (context, child, loadingProgress) => SizedBox(
+          width: size,
+          height: size,
+          child: Stack(
+            alignment: Alignment.center,
+            fit: StackFit.expand,
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(12.0),
+                child: CircularProgressIndicator(),
+              ),
+              child,
+            ],
+          ),
+        ),
+        image: path.startsWith("http")
+            ? NetworkImage(path)
+            : FileImage(File(path)),
       ),
-      image:
-          path.startsWith("http") ? NetworkImage(path) : FileImage(File(path)),
     );
   }
 }

@@ -36,12 +36,10 @@ class _StationListItemState extends State<StationListItem> {
         },
         child: Row(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: StationImage(
-                path: widget.stationData.image,
-                size: 80,
-              ),
+            StationImage(
+              path: widget.stationData.image,
+              size: 80,
+              borderRadius: 12,
             ),
             const Padding(padding: EdgeInsets.only(right: 6)),
             Expanded(
