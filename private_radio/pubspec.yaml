@@ -26,6 +26,7 @@ dependencies:
   flutter_hooks: ^0.20.5
   audio_session: ^0.1.19
   url_launcher: ^6.3.0
+  animations: ^2.0.11
   flutter_animate: ^4.5.0
 
 dev_dependencies:
