@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:private_radio/src/dashboard/dashboard_provider.dart';
 import 'package:private_radio/src/dashboard/prompt_station_dialogue.dart';
@@ -6,10 +7,10 @@ import 'package:provider/provider.dart';
 class AddStationButton extends StatelessWidget {
   const AddStationButton({
     super.key,
-    required TabController tabController,
-  }) : _tabController = tabController;
+    required this.tabController,
+  });
 
-  final TabController _tabController;
+  final TabController tabController;
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +19,17 @@ class AddStationButton extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.all(12),
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 150),
-        transitionBuilder: (child, animation) {
-          return FadeTransition(opacity: animation, child: child);
-        },
-        child: _tabController.index == 3
-            ? const SizedBox(height: 20, width: 20)
-            : FloatingActionButton(
+      child: AnimatedBuilder(
+        animation: tabController.animation!,
+        builder: (context, child) {
+          double proportion =
+              1 - clampDouble(tabController.animation!.value - 2, 0, 1);
+
+          return Transform.translate(
+            offset: Offset(0, proportion * -20),
+            child: Opacity(
+              opacity: proportion,
+              child: FloatingActionButton(
                 onPressed: () {
                   showDialog(
                     context: context,
@@ -41,6 +45,9 @@ class AddStationButton extends StatelessWidget {
                 },
                 child: const Icon(Icons.add),
               ),
+            ),
+          );
+        },
       ),
     );
   }
