@@ -5,6 +5,20 @@ import 'package:private_radio/src/serializable/station_data.dart';
 import 'package:provider/provider.dart';
 
 class StationList extends StatelessWidget {
+  Widget proxyDecorator(Widget child, int index, Animation<double> animation) {
+    return AnimatedBuilder(
+      animation: animation,
+      builder: (BuildContext context, Widget? child) {
+        return Material(
+          elevation: 0,
+          color: Colors.transparent,
+          child: child,
+        );
+      },
+      child: child,
+    );
+  }
+
   const StationList({
     super.key,
     required this.tabIndex,
@@ -51,6 +65,7 @@ class StationList extends StatelessWidget {
           )
         : tabIndex == 0
             ? ReorderableListView(
+                proxyDecorator: proxyDecorator,
                 padding: const EdgeInsets.only(bottom: 6),
                 children: _listItems(stationData),
                 onReorder: (int oldIndex, int newIndex) {
