@@ -134,6 +134,18 @@ class DashboardProvider with ChangeNotifier {
     save();
   }
 
+  void moveFavouriteStation(int oldIndex, int newIndex) {
+    if (oldIndex < newIndex) {
+      newIndex -= 1;
+    }
+
+    final String id = _stations.favourites.removeAt(oldIndex);
+    _stations.favourites.insert(newIndex, id);
+
+    notifyListeners();
+    save();
+  }
+
   void toggleFavourate(StationData stationData) {
     if (!_stations.stationData.contains(stationData)) return;
 
