@@ -30,7 +30,7 @@ class PlayerControlls extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           AnimatedSwitcher(
-            duration: const Duration(milliseconds: 150),
+            duration: const Duration(milliseconds: 100),
             transitionBuilder: (child, animation) {
               return FadeTransition(opacity: animation, child: child);
             },
