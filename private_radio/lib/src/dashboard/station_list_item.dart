@@ -28,7 +28,7 @@ class _StationListItemState extends State<StationListItem> {
       color: widget.stationData.id == dashboardController.selectedStation
           ? Theme.of(context).colorScheme.surfaceContainerHighest
           : Theme.of(context).colorScheme.surfaceContainerHigh,
-      margin: const EdgeInsets.fromLTRB(6, 6, 6, 0),
+      margin: const EdgeInsets.only(bottom: 6),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () {
