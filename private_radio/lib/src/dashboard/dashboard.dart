@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:private_radio/src/dashboard/dashboard_provider.dart';
-import 'package:private_radio/src/dashboard/prompt_station_dialogue.dart';
-import 'package:provider/provider.dart';
 
-import 'app_bar.dart';
+import 'add_station_button.dart';
+import 'top_bar.dart';
 import 'bottom_bar.dart';
 import 'station_list.dart';
 
@@ -44,9 +42,6 @@ class _DashboardState extends State<Dashboard>
 
   @override
   Widget build(BuildContext context) {
-    DashboardProvider dashboardProvider =
-        Provider.of<DashboardProvider>(context);
-
     Duration startDelay = const Duration(milliseconds: 500);
 
     return Container(
@@ -54,9 +49,8 @@ class _DashboardState extends State<Dashboard>
       child: Column(
         children: [
           TopBar(
-            hidden: _tabController.index == 3,
             searchController: _searchController,
-            boxDecoration: _containerDecoration(context),
+            tabController: _tabController,
           )
               .animate()
               .slideY(begin: -1, delay: startDelay)
@@ -70,75 +64,31 @@ class _DashboardState extends State<Dashboard>
                   children: [
                     StationList(
                       tabIndex: 0,
-                      key: const Key('0'),
                       searchTerm: _searchController.text,
                     ),
                     StationList(
                       tabIndex: 1,
-                      key: const Key('1'),
                       searchTerm: _searchController.text,
                     ),
                     StationList(
                       tabIndex: 2,
-                      key: const Key('2'),
                       searchTerm: _searchController.text,
                     ),
                     const Center(child: Text("Balls lol")),
                   ],
                 ).animate().fade(delay: startDelay),
-                Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 150),
-                    transitionBuilder: (child, animation) {
-                      return FadeTransition(opacity: animation, child: child);
-                    },
-                    child: _tabController.index == 3
-                        ? const SizedBox(height: 20, width: 20)
-                        : FloatingActionButton(
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return PromptStationDialogue(
-                                    title: "Create Station",
-                                    submitCallback: (stationData) {
-                                      dashboardProvider
-                                          .createStation(stationData);
-                                    },
-                                  );
-                                },
-                              );
-                            },
-                            child: const Icon(Icons.add),
-                          ),
-                  ),
-                ).animate().fadeIn(delay: const Duration(milliseconds: 1000)),
+                AddStationButton(tabController: _tabController)
+                    .animate()
+                    .fadeIn(delay: const Duration(milliseconds: 1000)),
               ],
             ),
           ),
-          BottomBar(
-            containerDecoration: _containerDecoration(context),
-            tabController: _tabController,
-          )
+          BottomBar(tabController: _tabController)
               .animate()
               .slideY(begin: 1, delay: startDelay)
               .fadeIn(delay: startDelay),
         ],
       ),
-    );
-  }
-
-  BoxDecoration _containerDecoration(BuildContext context) {
-    return BoxDecoration(
-      color: Theme.of(context).colorScheme.surfaceContainerHigh,
-      boxShadow: const [
-        BoxShadow(
-          color: Color.fromARGB(50, 0, 0, 0),
-          spreadRadius: 5,
-          blurRadius: 25,
-        ),
-      ],
     );
   }
 }

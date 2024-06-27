@@ -5,11 +5,9 @@ import 'player_controlls.dart';
 class BottomBar extends StatelessWidget {
   const BottomBar({
     super.key,
-    required this.containerDecoration,
     required this.tabController,
   });
 
-  final BoxDecoration containerDecoration;
   final TabController tabController;
 
   @override
@@ -18,7 +16,16 @@ class BottomBar extends StatelessWidget {
       top: false,
       child: Container(
         margin: EdgeInsets.zero,
-        decoration: containerDecoration,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surfaceContainerHigh,
+          boxShadow: const [
+            BoxShadow(
+              color: Color.fromARGB(50, 0, 0, 0),
+              spreadRadius: 5,
+              blurRadius: 25,
+            ),
+          ],
+        ),
         child: Column(
           children: [
             const PlayerControlls(),
