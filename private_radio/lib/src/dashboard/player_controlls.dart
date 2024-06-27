@@ -18,7 +18,10 @@ class PlayerControlls extends StatelessWidget {
     StationData? selectedStation = dashboardProvider.getSelectedStationData();
     AudioPlayer player = dashboardProvider.player;
 
-    bool ready = player.processingState == ProcessingState.ready;
+    bool loading = dashboardProvider.loadingNextSong;
+    print(
+        '\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.');
+    print(loading);
 
     return AnimatedSize(
       alignment: Alignment.bottomCenter,
@@ -31,7 +34,7 @@ class PlayerControlls extends StatelessWidget {
             transitionBuilder: (child, animation) {
               return FadeTransition(opacity: animation, child: child);
             },
-            child: ready && selectedStation != null
+            child: !loading && selectedStation != null
                 ? Padding(
                     padding: const EdgeInsets.fromLTRB(6, 6, 6, 0),
                     child: Row(
@@ -78,7 +81,7 @@ class PlayerControlls extends StatelessWidget {
                   )
                 : Container(),
           ),
-          !ready && selectedStation != null
+          loading && selectedStation != null
               ? const LinearProgressIndicator()
               : Container(),
         ],

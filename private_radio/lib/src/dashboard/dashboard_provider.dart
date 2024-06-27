@@ -12,9 +12,11 @@ class DashboardProvider with ChangeNotifier {
   late final AudioPlayer _player;
   String? _selectedStation;
   bool _loaded = false;
+  bool _loadingNextSong = false;
 
   Stations get stations => _stations;
   bool get loaded => _loaded;
+  bool get loadingNextSong => _loadingNextSong;
   AudioPlayer get player => _player;
   String? get selectedStation => _selectedStation;
 
@@ -31,6 +33,7 @@ class DashboardProvider with ChangeNotifier {
     );
 
     _player.playerStateStream.listen((playerState) {
+      _loadingNextSong = player.playing ? false : _loadingNextSong;
       notifyListeners();
     });
   }
@@ -139,6 +142,7 @@ class DashboardProvider with ChangeNotifier {
 
   Future<void> selectStation(String? stationId) async {
     _selectedStation = stationId;
+    _loadingNextSong = true;
 
     if (stationId == null) {
       await player.stop();
