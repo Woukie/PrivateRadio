@@ -19,9 +19,6 @@ class PlayerControlls extends StatelessWidget {
     AudioPlayer player = dashboardProvider.player;
 
     bool loading = dashboardProvider.loadingNextSong;
-    print(
-        '\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.');
-    print(loading);
 
     return AnimatedSize(
       alignment: Alignment.bottomCenter,
