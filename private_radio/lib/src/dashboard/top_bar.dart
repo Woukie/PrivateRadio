@@ -72,17 +72,24 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                   ),
                 ),
               ),
-              Transform.translate(
-                offset: Offset(sin((-2 * pi * proportion)) * 100, 0),
-                child: Padding(
-                  padding: const EdgeInsets.all(6),
-                  child: Text(
-                    ["Home", "Favourites", "Recents", "Settings"][fast
-                        ? proportion.abs() > 0.5
-                            ? widget.tabController.index
-                            : widget.tabController.previousIndex
-                        : widget.tabController.animation!.value.round()],
-                    style: Theme.of(context).textTheme.headlineMedium,
+              Transform.scale(
+                scale: 1 - (sin(pi * proportion) / 4).abs(),
+                child: Transform.translate(
+                  offset: Offset(sin((-2 * pi * proportion)) * 100,
+                      cos((-2 * pi * proportion)) * 5 - 5),
+                  child: Opacity(
+                    opacity: 1 - sin(pi * proportion).abs(),
+                    child: Padding(
+                      padding: const EdgeInsets.all(6),
+                      child: Text(
+                        ["Home", "Favourites", "Recents", "Settings"][fast
+                            ? proportion.abs() > 0.5
+                                ? widget.tabController.index
+                                : widget.tabController.previousIndex
+                            : widget.tabController.animation!.value.round()],
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -93,25 +100,3 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
     );
   }
 }
-
-// Transform.scale(
-//                 scale: 1 - (sin(pi * proportion) / 4).abs(),
-//                 child: Transform.translate(
-//                   offset: Offset(sin((-2 * pi * proportion)) * 100,
-//                       cos((-2 * pi * proportion)) * 5 - 5),
-//                   child: Opacity(
-//                     opacity: 1 - sin(pi * proportion).abs(),
-//                     child: Padding(
-//                       padding: const EdgeInsets.all(6),
-//                       child: Text(
-//                         ["Home", "Favourites", "Recents", "Settings"][fast
-//                             ? proportion.abs() > 0.5
-//                                 ? widget.tabController.index
-//                                 : widget.tabController.previousIndex
-//                             : widget.tabController.animation!.value.round()],
-//                         style: Theme.of(context).textTheme.headlineMedium,
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//               ),
