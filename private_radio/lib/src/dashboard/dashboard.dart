@@ -48,6 +48,7 @@ class _DashboardState extends State<Dashboard>
         Provider.of<DashboardProvider>(context);
 
     Duration startDelay = const Duration(milliseconds: 500);
+    Duration lateDelay = const Duration(milliseconds: 1000);
 
     return Container(
       color: Theme.of(context).colorScheme.surfaceContainerLow,
@@ -56,11 +57,53 @@ class _DashboardState extends State<Dashboard>
           TopBar(
             hidden: _tabController.index == 3,
             searchController: _searchController,
-            boxDecoration: _containerDecoration(context),
           )
               .animate()
               .slideY(begin: -1, delay: startDelay)
               .fadeIn(delay: startDelay),
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surfaceContainerLow,
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color.fromARGB(50, 0, 0, 0),
+                        spreadRadius: 0,
+                        blurRadius: 18,
+                        offset: Offset(0, 13),
+                      ),
+                    ],
+                  ),
+                  child: AnimatedSwitcher(
+                    switchInCurve: Curves.easeInOut,
+                    switchOutCurve: Curves.easeInOut,
+                    duration: const Duration(milliseconds: 250),
+                    transitionBuilder: (child, animation) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      );
+                    },
+                    child: Padding(
+                      key: Key(_tabController.index.toString()),
+                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 3),
+                      child: Text(
+                        style: Theme.of(context).textTheme.headlineMedium,
+                        switch (_tabController.index) {
+                          0 => "Home",
+                          1 => "Favourates",
+                          2 => "Recents",
+                          _ => "Settings"
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
           Expanded(
             child: Stack(
               alignment: Alignment.bottomCenter,
@@ -113,12 +156,21 @@ class _DashboardState extends State<Dashboard>
                             child: const Icon(Icons.add),
                           ),
                   ),
-                ).animate().fadeIn(delay: const Duration(milliseconds: 1000)),
+                ).animate().fade(delay: lateDelay),
               ],
             ),
           ),
           BottomBar(
-            containerDecoration: _containerDecoration(context),
+            containerDecoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceContainerHigh,
+              boxShadow: const [
+                BoxShadow(
+                  color: Color.fromARGB(50, 0, 0, 0),
+                  spreadRadius: 5,
+                  blurRadius: 25,
+                ),
+              ],
+            ),
             tabController: _tabController,
           )
               .animate()
@@ -126,19 +178,6 @@ class _DashboardState extends State<Dashboard>
               .fadeIn(delay: startDelay),
         ],
       ),
-    );
-  }
-
-  BoxDecoration _containerDecoration(BuildContext context) {
-    return BoxDecoration(
-      color: Theme.of(context).colorScheme.surfaceContainerHigh,
-      boxShadow: const [
-        BoxShadow(
-          color: Color.fromARGB(50, 0, 0, 0),
-          spreadRadius: 5,
-          blurRadius: 25,
-        ),
-      ],
     );
   }
 }
