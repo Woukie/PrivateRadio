@@ -1,5 +1,5 @@
 name: private_radio
-description: "A new Flutter project."
+description: "Play audio streams like a radio. Most importantly, with NO TRACKERS and NO ADVERTS."
 
 # Prevent accidental publishing to pub.dev.
 publish_to: "none"
