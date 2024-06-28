@@ -95,14 +95,15 @@ class DashboardProvider with ChangeNotifier {
       (station) => station.id == deleteStation.id,
     );
 
+    _stations.favourites.remove(deleteStation.id);
+
     if (_selectedStation == deleteStation.id) {
       _selectedStation = null;
       await player.stop();
-      notifyListeners();
     }
 
-    await save();
     notifyListeners();
+    await save();
   }
 
   Future<void> editStation(StationData newStation) async {
