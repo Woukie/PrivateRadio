@@ -65,14 +65,17 @@ class _DashboardState extends State<Dashboard>
                     StationList(
                       tabIndex: 0,
                       searchTerm: _searchController.text,
+                      tabController: _tabController,
                     ),
                     StationList(
                       tabIndex: 1,
                       searchTerm: _searchController.text,
+                      tabController: _tabController,
                     ),
                     StationList(
                       tabIndex: 2,
                       searchTerm: _searchController.text,
+                      tabController: _tabController,
                     ),
                     const Center(child: Text("Balls lol")),
                   ],

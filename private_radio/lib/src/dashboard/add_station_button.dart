@@ -38,6 +38,7 @@ class AddStationButton extends StatelessWidget {
                         title: "Create Station",
                         submitCallback: (stationData) {
                           dashboardProvider.createStation(stationData);
+                          tabController.animateTo(0);
                         },
                       );
                     },

@@ -11,9 +11,11 @@ class StationListItem extends StatefulWidget {
   const StationListItem({
     super.key,
     required this.stationData,
+    required this.tabController,
   });
 
   final StationData stationData;
+  final TabController tabController;
 
   @override
   State<StationListItem> createState() => _StationListItemState();
@@ -36,7 +38,12 @@ class _StationListItemState extends State<StationListItem> {
         borderRadius: BorderRadius.circular(12),
         onTap: () {
           clone
-              ? _showDialogue(context, clone, dashboardController)
+              ? _showDialogue(
+                  context,
+                  clone,
+                  dashboardController,
+                  widget.tabController,
+                )
               : dashboardController.selectStation(widget.stationData.id);
         },
         child: Row(
@@ -69,7 +76,12 @@ class _StationListItemState extends State<StationListItem> {
             ),
             IconButton(
               onPressed: () {
-                _showDialogue(context, clone, dashboardController);
+                _showDialogue(
+                  context,
+                  clone,
+                  dashboardController,
+                  widget.tabController,
+                );
               },
               icon: Icon(clone ? Icons.copy : Icons.edit),
             ),
@@ -92,8 +104,8 @@ class _StationListItemState extends State<StationListItem> {
     );
   }
 
-  Future<dynamic> _showDialogue(
-      BuildContext context, bool clone, DashboardProvider dashboardController) {
+  Future<dynamic> _showDialogue(BuildContext context, bool clone,
+      DashboardProvider dashboardController, TabController tabController) {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -101,10 +113,13 @@ class _StationListItemState extends State<StationListItem> {
           title: clone ? "Clone station" : "Edit Station",
           defaultStationData: widget.stationData,
           submitCallback: (stationData) {
-            clone
-                ? dashboardController
-                    .createStation(stationData..id = const Uuid().v4())
-                : dashboardController.editStation(stationData);
+            if (clone) {
+              tabController.animateTo(0);
+              dashboardController
+                  .createStation(stationData..id = const Uuid().v4());
+            } else {
+              dashboardController.editStation(stationData);
+            }
           },
           deleteCallback: clone
               ? null

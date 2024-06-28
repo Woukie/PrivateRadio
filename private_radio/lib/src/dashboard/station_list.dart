@@ -11,10 +11,12 @@ class StationList extends StatelessWidget {
     super.key,
     required this.tabIndex,
     required this.searchTerm,
+    required this.tabController,
   });
 
   final int tabIndex;
   final String searchTerm;
+  final TabController tabController;
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +80,7 @@ class StationList extends StatelessWidget {
         StationListItem(
           key: Key(index.toString()),
           stationData: stationData[index],
+          tabController: tabController,
         ),
     ];
   }
