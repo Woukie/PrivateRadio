@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:private_radio/src/api/api_provider.dart';
 import 'package:private_radio/src/dashboard/dashboard.dart';
 import 'package:private_radio/src/dashboard/dashboard_provider.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +26,7 @@ class App extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => dashboardProvider),
+        ChangeNotifierProvider(create: (_) => ApiProvider()),
       ],
       child: MaterialApp(
         restorationScopeId: 'app',

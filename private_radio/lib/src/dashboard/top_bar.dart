@@ -88,7 +88,7 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                       padding:
                           EdgeInsets.fromLTRB(6, lastPageProportion * 6, 6, 6),
                       child: Text(
-                        ["Home", "Favourites", "Recents", "Settings"][fast
+                        ["Home", "Favourites", "Browse", "Settings"][fast
                             ? proportion.abs() > 0.5
                                 ? widget.tabController.index
                                 : widget.tabController.previousIndex

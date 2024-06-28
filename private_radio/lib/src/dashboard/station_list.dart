@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:private_radio/src/api/api_provider.dart';
 import 'package:private_radio/src/dashboard/dashboard_provider.dart';
 import 'package:private_radio/src/dashboard/station_list_item.dart';
 import 'package:private_radio/src/serializable/station_data.dart';
@@ -24,16 +25,14 @@ class StationList extends StatelessWidget {
 
     if (tabIndex == 1) {
       stationData = dashboardController.getFavouriteStations();
+    } else if (tabIndex == 2) {
+      ApiProvider apiProvider = Provider.of<ApiProvider>(context);
+
+      stationData = apiProvider.apiStations;
+
+      apiProvider.fetchNextPage();
     } else {
       stationData = List.from(dashboardController.stations.stationData);
-    }
-
-    if (tabIndex == 2) {
-      stationData.removeWhere((station) => station.lastPlayed == null);
-      stationData.sort(
-        (stationA, stationB) =>
-            stationB.lastPlayed!.compareTo(stationA.lastPlayed!),
-      );
     }
 
     String searchTermLowerCase = searchTerm.toLowerCase();

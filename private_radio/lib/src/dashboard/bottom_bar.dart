@@ -43,7 +43,7 @@ class BottomBar extends StatelessWidget {
                     icon: Icon(Icons.star),
                   ),
                   Tab(
-                    icon: Icon(Icons.schedule),
+                    icon: Icon(Icons.public),
                   ),
                   Tab(
                     icon: Icon(Icons.settings),
