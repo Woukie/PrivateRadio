@@ -6,7 +6,7 @@ import 'package:private_radio/src/dashboard/station_list_item.dart';
 import 'package:private_radio/src/serializable/station_data.dart';
 import 'package:provider/provider.dart';
 
-class StationList extends StatelessWidget {
+class StationList extends StatefulWidget {
   const StationList({
     super.key,
     required this.tabIndex,
@@ -19,27 +19,47 @@ class StationList extends StatelessWidget {
   final TabController tabController;
 
   @override
+  State<StationList> createState() => _StationListState();
+}
+
+class _StationListState extends State<StationList> {
+  late final ScrollController _controller;
+
+  @override
+  void initState() {
+    _controller = ScrollController();
+
+    Provider.of<ApiProvider>(context, listen: false).fetchNextPage();
+
+    _controller.addListener(() {
+      if (_controller.position.maxScrollExtent - _controller.offset < 300) {
+        Provider.of<ApiProvider>(context, listen: false).fetchNextPage();
+      }
+    });
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     DashboardProvider dashboardController =
         Provider.of<DashboardProvider>(context);
 
     List<StationData> stationData;
 
-    if (tabIndex == 1) {
+    if (widget.tabIndex == 1) {
       stationData = dashboardController.getFavouriteStations();
-    } else if (tabIndex == 2) {
+    } else if (widget.tabIndex == 2) {
       ApiProvider apiProvider = Provider.of<ApiProvider>(context);
 
       stationData = apiProvider.apiStations;
-
-      apiProvider.fetchNextPage();
     } else {
       stationData = List.from(dashboardController.stations.stationData);
     }
 
-    String searchTermLowerCase = searchTerm.toLowerCase();
+    String searchTermLowerCase = widget.searchTerm.toLowerCase();
 
-    if (searchTerm != "") {
+    if (widget.searchTerm != "") {
       stationData.removeWhere(
         (station) => !station.name.toLowerCase().contains(searchTermLowerCase),
       );
@@ -48,12 +68,12 @@ class StationList extends StatelessWidget {
     return stationData.isEmpty
         ? Center(
             child: Text(
-              searchTerm != ""
+              widget.searchTerm != ""
                   ? "Couldn't find any stations matching that search query"
                   : "No stations here!",
             ),
           )
-        : tabIndex <= 1 && searchTerm == ""
+        : widget.tabIndex <= 1 && widget.searchTerm == ""
             ? ReorderableListView(
                 proxyDecorator: (child, idk, animation) => ProxyDecorator(
                   animation: animation,
@@ -62,13 +82,14 @@ class StationList extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(6, 6, 6, 0),
                 children: _listItems(stationData),
                 onReorder: (int oldIndex, int newIndex) {
-                  tabIndex == 0
+                  widget.tabIndex == 0
                       ? dashboardController.moveStation(oldIndex, newIndex)
                       : dashboardController.moveFavouriteStation(
                           oldIndex, newIndex);
                 },
               )
             : ListView(
+                controller: _controller,
                 padding: const EdgeInsets.all(6),
                 children: _listItems(stationData),
               );
@@ -80,7 +101,7 @@ class StationList extends StatelessWidget {
         StationListItem(
           key: Key(index.toString()),
           stationData: stationData[index],
-          tabController: tabController,
+          tabController: widget.tabController,
         ),
     ];
   }

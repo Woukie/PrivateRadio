@@ -24,7 +24,7 @@ class ApiProvider with ChangeNotifier {
 
     List<dynamic> stationsJson = jsonDecode(response.body);
 
-    if (_apiStations.isEmpty) {
+    if (stationsJson.isEmpty) {
       _endOfList = true;
     } else {
       _nextPage++;
