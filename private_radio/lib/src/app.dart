@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:private_radio/src/api/api_provider.dart';
 import 'package:private_radio/src/dashboard/dashboard.dart';
 import 'package:private_radio/src/dashboard/dashboard_provider.dart';
+import 'package:private_radio/src/settings/settings_provider.dart';
 import 'package:provider/provider.dart';
 
 class App extends StatelessWidget {
@@ -23,9 +24,13 @@ class App extends StatelessWidget {
     DashboardProvider dashboardProvider = DashboardProvider();
     dashboardProvider.load();
 
+    SettingsProvider settingsProvider = SettingsProvider();
+    settingsProvider.load();
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => dashboardProvider),
+        ChangeNotifierProvider(create: (_) => settingsProvider),
         ChangeNotifierProvider(create: (_) => ApiProvider()),
       ],
       child: MaterialApp(
@@ -48,7 +53,7 @@ class App extends StatelessWidget {
                 fontFamily: GoogleFonts.openSans().fontFamily,
               ),
         ),
-        themeMode: ThemeMode.system,
+        themeMode: settingsProvider.themeMode,
         home: const Scaffold(
           body: AnimatedRoot(),
         ),
