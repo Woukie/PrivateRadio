@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class StationImage extends StatelessWidget {
   const StationImage({
@@ -16,36 +17,50 @@ class StationImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius),
-      child: Image(
-        height: size,
+      child: SizedBox(
         width: size,
-        errorBuilder: (context, error, stackTrace) => Card(
-          margin: EdgeInsets.zero,
-          color: Theme.of(context).colorScheme.surfaceContainerHighest,
-          child: Icon(
-            size: size,
-            Icons.radio,
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
-        ),
-        loadingBuilder: (context, child, loadingProgress) => SizedBox(
-          width: size,
+        height: size,
+        child: Image(
           height: size,
-          child: Stack(
-            alignment: Alignment.center,
-            fit: StackFit.expand,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(12.0),
-                child: CircularProgressIndicator(),
-              ),
-              child,
-            ],
+          width: size,
+          frameBuilder: (
+            BuildContext context,
+            Widget child,
+            int? frame,
+            bool wasSynchronouslyLoaded,
+          ) {
+            if (wasSynchronouslyLoaded) {
+              return child;
+            }
+            return child.animate().fade();
+          },
+          errorBuilder: (context, error, stackTrace) => Card(
+            margin: EdgeInsets.zero,
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
+            child: Icon(
+              size: size,
+              Icons.radio,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
           ),
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) {
+              return child;
+            }
+
+            return Center(
+              child: CircularProgressIndicator(
+                value: loadingProgress.expectedTotalBytes != null
+                    ? loadingProgress.cumulativeBytesLoaded /
+                        loadingProgress.expectedTotalBytes!
+                    : null,
+              ),
+            );
+          },
+          image: path.startsWith("http")
+              ? NetworkImage(path)
+              : FileImage(File(path)),
         ),
-        image: path.startsWith("http")
-            ? NetworkImage(path)
-            : FileImage(File(path)),
       ),
     );
   }
