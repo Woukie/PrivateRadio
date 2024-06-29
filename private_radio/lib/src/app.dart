@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:private_radio/src/api/api_provider.dart';
 import 'package:private_radio/src/dashboard/dashboard.dart';
 import 'package:private_radio/src/dashboard/dashboard_provider.dart';
@@ -32,6 +31,8 @@ class App extends StatelessWidget {
       child: Builder(builder: (context) {
         settingsProvider = Provider.of<SettingsProvider>(context);
 
+        String fontFamily =
+            '${settingsProvider.fontName.toString().replaceAll(" ", "")}_regular';
         return MaterialApp(
           restorationScopeId: 'app',
           localizationsDelegates: const [
@@ -44,12 +45,12 @@ class App extends StatelessWidget {
           ],
           theme: ThemeData.light().copyWith(
             textTheme: Typography().black.apply(
-                  fontFamily: GoogleFonts.openSans().fontFamily,
+                  fontFamily: fontFamily,
                 ),
           ),
           darkTheme: ThemeData.dark().copyWith(
             textTheme: Typography().white.apply(
-                  fontFamily: GoogleFonts.openSans().fontFamily,
+                  fontFamily: fontFamily,
                 ),
           ),
           themeMode: settingsProvider.themeMode,
