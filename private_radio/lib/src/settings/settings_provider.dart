@@ -36,8 +36,8 @@ class SettingsProvider with ChangeNotifier {
   Future<void> _load() async {
     final prefs = await SharedPreferences.getInstance();
     _themeMode = switch (prefs.getString('theme')) {
-      "dark" => ThemeMode.dark,
-      "light" => ThemeMode.light,
+      "ThemeMode.dark" => ThemeMode.dark,
+      "ThemeMode.light" => ThemeMode.light,
       _ => ThemeMode.system,
     };
     _fontName = prefs.getString('fontName') ?? "OpenSans";
