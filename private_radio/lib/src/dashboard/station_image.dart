@@ -44,9 +44,7 @@ class StationImage extends StatelessWidget {
             ),
           ),
           loadingBuilder: (context, child, loadingProgress) {
-            if (loadingProgress == null) {
-              return child;
-            }
+            if (loadingProgress == null) return child;
 
             return Center(
               child: CircularProgressIndicator(
@@ -54,7 +52,7 @@ class StationImage extends StatelessWidget {
                     ? loadingProgress.cumulativeBytesLoaded /
                         loadingProgress.expectedTotalBytes!
                     : null,
-              ),
+              ).animate().fadeIn(),
             );
           },
           image: path.startsWith("http")
