@@ -27,8 +27,9 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
         builder: (BuildContext context, snapshot) {
           bool fast =
               (widget.tabController.index - widget.tabController.previousIndex)
-                      .abs() >
-                  1;
+                          .abs() >
+                      1 &&
+                  widget.tabController.indexIsChanging;
 
           double proportion;
 

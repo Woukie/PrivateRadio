@@ -19,16 +19,12 @@ class _DashboardState extends State<Dashboard>
   final TextEditingController _searchController = TextEditingController();
   late final TabController _tabController =
       TabController(vsync: this, length: 4);
-  int _lastIndex = 0;
 
   @override
   void initState() {
     super.initState();
     _tabController.addListener(() {
-      if (_lastIndex != _tabController.index) {
-        setState(() {});
-        _lastIndex = _tabController.index;
-      }
+      setState(() {});
     });
     _searchController.addListener(() {
       setState(() {});
