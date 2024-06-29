@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:private_radio/src/serializable/station_data.dart';
 import 'package:private_radio/src/serializable/stations.dart';
@@ -187,8 +188,20 @@ class DashboardProvider with ChangeNotifier {
     await save();
 
     try {
-      await player.setUrl(stationData.url);
+      // await player.setUrl(stationData.url);
+      player.setAudioSource(
+        AudioSource.uri(
+          Uri.parse(stationData.url),
+          tag: MediaItem(
+            id: stationData.id,
+            title: stationData.name,
+            album: stationData.url,
+            artUri: Uri.parse(stationData.image),
+          ),
+        ),
+      );
       await player.play();
+      await player.setSpeed(1.0);
       if (kDebugMode) print("Successfully playing audio");
       notifyListeners();
     } catch (e) {
@@ -201,6 +214,7 @@ class DashboardProvider with ChangeNotifier {
       await player.pause();
     } else {
       await player.play();
+      await player.setSpeed(1.0);
     }
 
     notifyListeners();
