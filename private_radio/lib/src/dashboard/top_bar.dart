@@ -84,7 +84,11 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                   offset: Offset(sin((-2 * pi * proportion)) * 100,
                       cos((-2 * pi * proportion)) * 5 - 5),
                   child: Opacity(
-                    opacity: 1 - sin(pi * proportion).abs(),
+                    opacity: clampDouble(
+                      (1 - sin(pi * proportion).abs()) * 2,
+                      0.0,
+                      1.0,
+                    ),
                     child: Padding(
                       padding:
                           EdgeInsets.fromLTRB(6, lastPageProportion * 6, 6, 6),
