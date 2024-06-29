@@ -39,8 +39,6 @@ class ApiProvider with ChangeNotifier {
 
     _loadingNextPage = false;
 
-    print(_apiStations);
-
     notifyListeners();
   }
 }
