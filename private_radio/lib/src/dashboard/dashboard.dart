@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
+import '../settings/settings_page.dart';
 import 'add_station_button.dart';
 import 'top_bar.dart';
 import 'bottom_bar.dart';
@@ -77,7 +78,7 @@ class _DashboardState extends State<Dashboard>
                       searchTerm: _searchController.text,
                       tabController: _tabController,
                     ),
-                    const Center(child: Text("Balls lol")),
+                    const SettingsPage(),
                   ],
                 ).animate().fade(delay: startDelay),
                 AddStationButton(tabController: _tabController)

@@ -21,43 +21,43 @@ class App extends StatelessWidget {
       print("Building the dashboard provider");
     }
 
-    DashboardProvider dashboardProvider = DashboardProvider();
-    dashboardProvider.load();
-
     SettingsProvider settingsProvider = SettingsProvider();
-    settingsProvider.load();
 
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => dashboardProvider),
+        ChangeNotifierProvider(create: (_) => DashboardProvider()),
         ChangeNotifierProvider(create: (_) => settingsProvider),
         ChangeNotifierProvider(create: (_) => ApiProvider()),
       ],
-      child: MaterialApp(
-        restorationScopeId: 'app',
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [
-          Locale('en', ''), // English, no country code
-        ],
-        theme: ThemeData(
-          textTheme: GoogleFonts.openSansTextTheme(
-            Theme.of(context).textTheme,
+      child: Builder(builder: (context) {
+        settingsProvider = Provider.of<SettingsProvider>(context);
+
+        return MaterialApp(
+          restorationScopeId: 'app',
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('en', ''), // English, no country code
+          ],
+          theme: ThemeData.light().copyWith(
+            textTheme: Typography().black.apply(
+                  fontFamily: GoogleFonts.openSans().fontFamily,
+                ),
           ),
-        ),
-        darkTheme: ThemeData.dark().copyWith(
-          textTheme: Typography().white.apply(
-                fontFamily: GoogleFonts.openSans().fontFamily,
-              ),
-        ),
-        themeMode: settingsProvider.themeMode,
-        home: const Scaffold(
-          body: AnimatedRoot(),
-        ),
-      ),
+          darkTheme: ThemeData.dark().copyWith(
+            textTheme: Typography().white.apply(
+                  fontFamily: GoogleFonts.openSans().fontFamily,
+                ),
+          ),
+          themeMode: settingsProvider.themeMode,
+          home: const Scaffold(
+            body: AnimatedRoot(),
+          ),
+        );
+      }),
     );
   }
 }

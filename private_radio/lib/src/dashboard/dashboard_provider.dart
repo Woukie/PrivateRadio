@@ -36,9 +36,11 @@ class DashboardProvider with ChangeNotifier {
       _loadingNextSong = player.playing ? false : _loadingNextSong;
       notifyListeners();
     });
+
+    _load();
   }
 
-  Future<void> load() async {
+  Future<void> _load() async {
     final path = (await getApplicationDocumentsDirectory()).path;
     File stationsFile = File('$path/stations.json');
 
