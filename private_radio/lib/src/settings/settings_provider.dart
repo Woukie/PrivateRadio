@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -59,7 +60,8 @@ class SettingsProvider with ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('fontName', _fontName);
 
-    print(_fontName);
-    print(GoogleFonts.asMap()[_fontName]!());
+    if (kDebugMode) {
+      print("Selected font ${GoogleFonts.asMap()[_fontName]!()}");
+    }
   }
 }
