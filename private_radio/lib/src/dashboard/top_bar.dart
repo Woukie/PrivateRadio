@@ -67,6 +67,12 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: TextField(
+                        onSubmitted: (value) {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                        },
+                        onTapOutside: (event) {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                        },
                         controller: widget.searchController,
                         decoration: const InputDecoration(
                           contentPadding: EdgeInsets.zero,
