@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:private_radio/src/api/api_provider.dart';
 import 'package:private_radio/src/dashboard/dashboard.dart';
 import 'package:private_radio/src/dashboard/dashboard_provider.dart';
@@ -31,8 +32,11 @@ class App extends StatelessWidget {
       child: Builder(builder: (context) {
         settingsProvider = Provider.of<SettingsProvider>(context);
 
-        String fontFamily =
-            '${settingsProvider.fontName.toString().replaceAll(" ", "")}_regular';
+        String fontName = settingsProvider.fontName.toString();
+        String fontFamily = '${fontName.replaceAll(" ", "")}_regular';
+
+        GoogleFonts.asMap()[fontName]!();
+
         return MaterialApp(
           restorationScopeId: 'app',
           localizationsDelegates: const [

@@ -58,6 +58,7 @@ class SettingsProvider with ChangeNotifier {
     notifyListeners();
 
     final prefs = await SharedPreferences.getInstance();
+    GoogleFonts.asMap()[_fontName]!();
     prefs.setString('fontName', _fontName);
 
     if (kDebugMode) {
