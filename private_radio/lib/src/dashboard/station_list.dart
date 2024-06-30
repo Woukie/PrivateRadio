@@ -125,7 +125,7 @@ class _StationListState extends State<StationList> {
               )
             : ListView(
                 controller: _controller,
-                padding: const EdgeInsets.all(6),
+                padding: const EdgeInsets.fromLTRB(6, 6, 6, 0),
                 children: _listItems(stationData),
               );
   }
