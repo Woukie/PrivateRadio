@@ -147,7 +147,7 @@ class _PromptStationDialogueState extends State<PromptStationDialogue> {
                           },
                       ),
                       const TextSpan(
-                        text: ' for a list of URLs',
+                        text: ' for an example list of radio station URLs',
                       )
                     ],
                   ),
