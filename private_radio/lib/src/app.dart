@@ -35,7 +35,8 @@ class App extends StatelessWidget {
         String fontName = settingsProvider.fontName.toString();
         String fontFamily = '${fontName.replaceAll(" ", "")}_regular';
 
-        GoogleFonts.asMap()[fontName]!();
+        var fontLoadFunction = GoogleFonts.asMap()[fontName];
+        if (fontLoadFunction != null) fontLoadFunction();
 
         return MaterialApp(
           restorationScopeId: 'app',

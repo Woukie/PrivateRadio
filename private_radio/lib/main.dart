@@ -8,7 +8,7 @@ void main() async {
     androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
     androidNotificationChannelName: 'Audio playback',
     androidNotificationOngoing: true,
-    androidNotificationIcon: "mipmap/ic_launcher",
+    androidShowNotificationBadge: false,
   );
 
   WidgetsFlutterBinding.ensureInitialized();
