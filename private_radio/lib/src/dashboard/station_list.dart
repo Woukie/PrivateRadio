@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:private_radio/src/api/api_provider.dart';
@@ -5,6 +8,7 @@ import 'package:private_radio/src/dashboard/dashboard_provider.dart';
 import 'package:private_radio/src/dashboard/station_list_item.dart';
 import 'package:private_radio/src/serializable/station_data.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class StationList extends StatefulWidget {
   const StationList({
@@ -24,6 +28,9 @@ class StationList extends StatefulWidget {
 
 class _StationListState extends State<StationList> {
   late final ScrollController _controller;
+  String oldSearchTerm = "";
+  CancelableOperation? searchOperation;
+  List<StationData> stationData = List.empty(growable: true);
 
   @override
   void initState() {
@@ -45,14 +52,14 @@ class _StationListState extends State<StationList> {
     DashboardProvider dashboardController =
         Provider.of<DashboardProvider>(context);
 
-    List<StationData> stationData;
-
     if (widget.tabIndex == 1) {
       stationData = dashboardController.getFavouriteStations();
     } else if (widget.tabIndex == 2) {
       ApiProvider apiProvider = Provider.of<ApiProvider>(context);
 
-      stationData = apiProvider.apiStations;
+      if (widget.searchTerm == "") {
+        stationData = apiProvider.apiStations;
+      }
     } else {
       stationData = List.from(dashboardController.stations.stationData);
     }
@@ -60,10 +67,38 @@ class _StationListState extends State<StationList> {
     String searchTermLowerCase = widget.searchTerm.toLowerCase();
 
     if (widget.searchTerm != "") {
-      stationData.removeWhere(
-        (station) => !station.name.toLowerCase().contains(searchTermLowerCase),
-      );
+      if (widget.tabIndex == 2) {
+        if (oldSearchTerm != widget.searchTerm) {
+          searchOperation?.cancel();
+
+          searchOperation = CancelableOperation.fromFuture(
+            http.get(Uri.parse(
+              'https://eu-west-2.aws.data.mongodb-api.com/app/data-yydgvpy/endpoint/search?term=${widget.searchTerm}',
+            )),
+            onCancel: () => {debugPrint('Cancelled Search')},
+          );
+
+          searchOperation?.value.then((value) {
+            List<dynamic> stationsJson = jsonDecode(value.body);
+
+            setState(() {
+              stationData = ([
+                for (var station in stationsJson)
+                  StationData.fromJson(
+                    station..["id"] = "",
+                  )
+              ]);
+            });
+          });
+        }
+      } else {
+        stationData.removeWhere(
+          (station) =>
+              !station.name.toLowerCase().contains(searchTermLowerCase),
+        );
+      }
     }
+    oldSearchTerm = widget.searchTerm;
 
     return stationData.isEmpty
         ? Center(
