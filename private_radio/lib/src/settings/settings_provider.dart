@@ -40,7 +40,7 @@ class SettingsProvider with ChangeNotifier {
       "ThemeMode.light" => ThemeMode.light,
       _ => ThemeMode.system,
     };
-    _fontName = prefs.getString('fontName') ?? "OpenSans";
+    _fontName = prefs.getString('fontName') ?? "Open Sans";
 
     notifyListeners();
   }

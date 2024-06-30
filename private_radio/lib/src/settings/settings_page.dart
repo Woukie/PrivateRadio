@@ -51,7 +51,9 @@ class SettingsPage extends StatelessWidget {
             title: "Font",
             label: "Choose what font the app uses",
             child: DropdownMenu(
-              initialSelection: settingsProvider.fontName,
+              initialSelection: settingsProvider.fontName == ""
+                  ? "Open Sans"
+                  : settingsProvider.fontName,
               onSelected: (value) {
                 if (value == null) return;
                 settingsProvider.updateFontName(value);
