@@ -4,7 +4,7 @@ description: "Play audio streams like a radio. Most importantly, with NO TRACKER
 # Prevent accidental publishing to pub.dev.
 publish_to: "none"
 
-version: 1.1.1+4
+version: 1.1.1+5
 
 environment:
   sdk: ">=3.4.3 <4.0.0"
