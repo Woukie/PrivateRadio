@@ -9,6 +9,11 @@
         android:label="Private Radio"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_player"/>
+
         <activity
             android:name="com.ryanheise.audioservice.AudioServiceActivity"
             android:exported="true"
